@@ -18,6 +18,9 @@ function get_option($name, $default = false) {
 }
 
 // Registering hooks has no effect in these isolated CLI tests.
+function get_post_types($args = [], $output = 'names') {
+    return ['post', 'page', 'product'];
+}
 function add_action(...$args): void {}
 function add_filter(...$args): void {}
 
@@ -88,3 +91,19 @@ if ($failures > 0) {
 }
 
 echo 'All ' . count($cases) . ' post-type settings tests passed.' . PHP_EOL;
+
+$sanitizationCases = [
+    ['input' => ['', 'post', 'page', 'post'], 'expected' => ['post', 'page']],
+    ['input' => ['post', 'unknown', 'product'], 'expected' => ['post', 'product']],
+    ['input' => [123, null, ['post'], 'page'], 'expected' => ['page']],
+    ['input' => 'post', 'expected' => []],
+    ['input' => [], 'expected' => []],
+];
+foreach ($sanitizationCases as $index => $case) {
+    $actual = wdc_sanitize_post_types($case['input']);
+    if ($actual !== $case['expected']) {
+        fwrite(STDERR, "FAIL sanitize case {$index}: " . var_export($actual, true) . PHP_EOL);
+        exit(1);
+    }
+    echo "PASS sanitize case {$index}" . PHP_EOL;
+}
