@@ -27,6 +27,22 @@ function wdc_duplicate_post_status() {
     return is_string($status) && in_array($status, $allowed, true) ? $status : 'draft';
 }
 
+// Users who can edit a post may not have permission to publish it.
+// Prevent a configured public/private status from escalating their privileges.
+function wdc_permitted_duplicate_status($post_type) {
+    $status = wdc_duplicate_post_status();
+    if (!in_array($status, ['publish', 'private'], true)) {
+        return $status;
+    }
+
+    $type = get_post_type_object($post_type);
+    if (!$type || !isset($type->cap->publish_posts) || !current_user_can($type->cap->publish_posts)) {
+        return 'draft';
+    }
+
+    return $status;
+}
+
 // Admin Menu
 function wdc_admin_menu() {
     add_options_page('WP Duplicate Content', 'Duplicate Content', 'manage_options', 'wp-duplicate-content', 'wdc_settings_page');
@@ -107,7 +123,7 @@ function wdc_duplicate_post() {
         'post_title'   => 'Copy - ' . $post->post_title,
         'post_content' => $post->post_content,
         'post_excerpt' => $post->post_excerpt,
-        'post_status'  => wdc_duplicate_post_status(),
+        'post_status'  => wdc_permitted_duplicate_status($post->post_type),
         'post_type'    => $post->post_type,
         'post_author'  => get_current_user_id()
     ];
