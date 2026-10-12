@@ -81,6 +81,18 @@ This guide describes how to verify the post-duplication changes introduced in #4
 
 **Observed:** Not run
 
+### T7 — Disable all post types
+
+1. Go to **Settings → Duplicate Content** in WordPress admin.
+2. Uncheck **every** available post type and save the settings.
+3. Reload the settings screen and inspect the checkboxes.
+4. Inspect the Posts and Pages lists for **Duplicate** links.
+5. Re-enable only Posts, save, and refresh the lists.
+
+**Expected:** After saving no selections, every checkbox stays unchecked and no Duplicate actions are shown. After re-enabling Posts, duplication links return only for the selected type.
+
+**Observed:** Not run
+
 ## Results summary
 
 | Test | Result | Notes |
@@ -91,6 +103,7 @@ This guide describes how to verify the post-duplication changes introduced in #4
 | T4 Permissions and nonce | Not run | |
 | T5 Original unchanged | Not run | |
 | T6 Featured image | Not run | |
+| T7 Disable all post types | Not run | |
 
 ## Contributor checklist
 
