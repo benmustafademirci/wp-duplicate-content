@@ -16,7 +16,8 @@ if (!defined('ABSPATH')) {
 // Fresh installations allow posts and pages until an admin saves a selection.
 function wdc_enabled_post_types() {
     $types = get_option('wdc_post_types', ['post', 'page']);
-    return is_array($types) ? $types : [];
+    // The hidden checkbox sentinel means "no post types selected".
+    return is_array($types) ? array_values(array_filter($types, 'strlen')) : [];
 }
 
 // Admin Menu
@@ -57,6 +58,9 @@ add_action('admin_init', 'wdc_register_settings');
 function wdc_post_types_callback() {
     $post_types = get_post_types(['public' => true], 'objects');
     $selected = wdc_enabled_post_types();
+    // When every checkbox is unchecked, browsers otherwise submit no value.
+    // Persist an empty selection instead of silently keeping the previous one.
+    echo '<input type="hidden" name="wdc_post_types[]" value="">';
     foreach ($post_types as $type) {
         echo '<input type="checkbox" name="wdc_post_types[]" value="' . esc_attr($type->name) . '" ' . (in_array($type->name, $selected, true) ? 'checked' : '') . '> ' . esc_html($type->label) . '<br>';
     }
