@@ -8,17 +8,19 @@ WP Duplicate Content, WordPress içeriklerinizi (gönderiler, sayfalar ve özel 
 ✅ Özel İçerik Türlerini Destekler: WooCommerce ürünleri gibi özel içerik türleriyle de uyumludur.<br>
 ✅ Kolay Yönetim Paneli: WordPress yönetici panelinden eklenti ayarlarını yapılandırın.<br>
 
-📥 Kurulum<br>
-1️⃣ Eklentiyi İndir:<br>
-2️⃣ WordPress'e Yükleyin:<br>
+## 📥 Kurulum
 
-WordPress panelinize giriş yapın.<br>
-Eklentiler → Yeni Ekle yolunu izleyin.<br>
-"Eklenti Yükle" butonuna tıklayın.<br>
-ZIP dosyanızı seçip yükleyin ve etkinleştirin.<br>
-3️⃣ Kullanmaya Başlayın: Yönetici panelinde Ayarlar → WP Duplicate Content sayfasından yapılandırabilirsiniz.<br>
+1. Bu deponun **Code → Download ZIP** menüsünden eklenti ZIP dosyasını indirin.
+2. WordPress yönetim panelinde **Eklentiler → Yeni Ekle → Eklenti Yükle** bölümüne gidin.
+3. ZIP dosyasını seçip **Şimdi Kur** butonuna tıklayın.
+4. Kurulum tamamlandığında **Etkinleştir** seçeneğini seçin.
+5. **Ayarlar → Duplicate Content** ekranından hangi yazı türlerinin çoğaltılacağını ve varsayılan durumunu belirleyin.
+6. **Yazılar** veya **Sayfalar** listesinden çoğaltmak istediğiniz içeriğin **Duplicate** bağlantısını kullanın.
 
-🛠 Kullanım<br>
+> **Öneri:** Özellikle üretim sitelerinde değişiklik yapmadan önce veritabanınızı yedekleyin.
+
+## 🛠 Kullanım
+
 Gönderiler/Sayfalar Listesi:<br>
 Her yazı veya sayfanın altında "Duplicate" (Çoğalt) butonu bulunur. Tıkladığınızda içeriğiniz seçtiğiniz duruma göre kopyalanır.<br>
 Ayarlar Paneli:<br>
