@@ -17,6 +17,7 @@ function get_option($name, $default = false) {
 function current_user_can($cap, $id = null) {
     return $cap === 'edit_post' && $GLOBALS['wdc_can_edit'];
 }
+function absint($value) { return abs((int) $value); }
 function admin_url($path) { return '/wp-admin/' . $path; }
 function wp_nonce_url($url, $action) { return $url . '&_wpnonce=test'; }
 function esc_url($v) { return $v; }
