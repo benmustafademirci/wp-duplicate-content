@@ -149,6 +149,8 @@ function wdc_duplicate_post() {
         'post_excerpt' => $post->post_excerpt,
         'post_parent'  => (int) $post->post_parent,
         'menu_order'   => (int) $post->menu_order,
+        'comment_status' => $post->comment_status,
+        'ping_status'    => $post->ping_status,
         'post_status'  => wdc_permitted_duplicate_status($post->post_type),
         'post_type'    => $post->post_type,
         'post_author'  => get_current_user_id()
