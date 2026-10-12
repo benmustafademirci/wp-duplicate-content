@@ -1,108 +1,91 @@
-# WP Duplicate Content — Testing Guide
+# WP Duplicate Content — Manual Testing Guide
 
-## Overview
+This guide describes how to verify the post-duplication changes introduced in #4. It is a test plan, **not a claim that tests have passed**.
 
-This document describes the manual testing process for the WP Duplicate Content plugin.
+## Environment
 
-Feature: Preserve categories, tags, and custom taxonomy terms when duplicating WordPress posts.
+- WordPress version: _Record when tested_
+- PHP version: _Record when tested_
+- Plugin version: 1.0.1
+- Test site / setup: _Record when tested_
+- Tested by: _Record when tested_
+- Test date: _Record when tested_
 
-Contributors:
-•⁠  ⁠Mustafa Demirci (@benmustafademirci)
-•⁠  ⁠Yusuf Gülen (@ygulen651)
+## Prerequisites
 
-## Test Environment
+1. Set up a local or staging WordPress site and back it up.
+2. Install and activate WP Duplicate Content.
+3. Sign in as an administrator or an account with editing permission.
+4. Open **Settings → Duplicate Content** and choose a default duplicated-post status.
+5. Verify that the **Duplicate** action is visible in the Posts list.
 
-•⁠  ⁠WordPress Version: To be recorded
-•⁠  ⁠PHP Version: To be recorded
-•⁠  ⁠Plugin Version: 1.0.1
-•⁠  ⁠Environment: Local WordPress installation
-•⁠  ⁠Test Status: Not yet executed
+## Test cases
 
-## Test 1: Duplicate Post with Categories
+### T1 — Categories and tags
 
-Steps:
-1.⁠ ⁠Create a WordPress post.
-2.⁠ ⁠Assign two categories.
-3.⁠ ⁠Save the post.
-4.⁠ ⁠Click the Duplicate action.
-5.⁠ ⁠Open the duplicated post.
+1. Create a post with at least two categories and three tags.
+2. Save it, then select **Duplicate** from the Posts list.
+3. Open the newly created copy and compare its terms to the original.
 
-Expected Result:
-•⁠  ⁠A new post is created.
-•⁠  ⁠The original post remains unchanged.
-•⁠  ⁠Both categories are preserved.
+**Expected:** The copy retains all selected category and tag term IDs; the source post is unchanged.
 
-Actual Result: Not run
+**Observed:** Not run
 
-## Test 2: Duplicate Post with Tags
+### T2 — No tags assigned
 
-Steps:
-1.⁠ ⁠Create a post.
-2.⁠ ⁠Assign three different tags.
-3.⁠ ⁠Save the post.
-4.⁠ ⁠Duplicate the post.
-5.⁠ ⁠Inspect the duplicated post.
+1. Create a post without tags (WordPress may assign a default category).
+2. Duplicate it and inspect the copied post.
 
-Expected Result:
-•⁠  ⁠All three tags are copied.
-•⁠  ⁠No additional tags are created.
-•⁠  ⁠Original post remains unchanged.
+**Expected:** Duplication succeeds; no unrelated tags are added.
 
-Actual Result: Not run
+**Observed:** Not run
 
-## Test 3: Post Without Taxonomy Terms
+### T3 — Custom taxonomy
 
-Steps:
-1.⁠ ⁠Create a post without tags.
-2.⁠ ⁠Duplicate the post.
-3.⁠ ⁠Inspect the new post.
+1. On a test site, register a custom taxonomy for a post type.
+2. Create an item with at least two existing terms from that taxonomy.
+3. Duplicate the item and compare taxonomy term assignments.
 
-Expected Result:
-•⁠  ⁠Duplication completes successfully.
-•⁠  ⁠No unexpected taxonomy terms are added.
+**Expected:** The duplicate retains its original registered taxonomy terms.
 
-Actual Result: Not run
+**Observed:** Not run
 
-## Test 4: Custom Post Types
+### T4 — Invalid nonce / unauthorized user
 
-Steps:
-1.⁠ ⁠Register a custom post type with a taxonomy.
-2.⁠ ⁠Create an item with assigned taxonomy terms.
-3.⁠ ⁠Duplicate the item.
-4.⁠ ⁠Compare the original and duplicate.
+1. As a user lacking permission to edit the source post, attempt duplication.
+2. As an authorized user, attempt the action with a missing or invalid nonce.
+3. Repeat with a valid nonce-protected link.
 
-Expected Result:
-•⁠  ⁠Registered taxonomy terms are preserved.
-•⁠  ⁠The original item remains unchanged.
+**Expected:** Unauthorized/invalid requests are rejected; an authorized valid request succeeds.
 
-Actual Result: Not run
+**Observed:** Not run
 
-## Test 5: Security and Permissions
+### T5 — Original record stays unchanged
 
-Steps:
-1.⁠ ⁠Attempt duplication as a user without edit permission.
-2.⁠ ⁠Attempt duplication with an invalid nonce.
-3.⁠ ⁠Attempt duplication with a valid authorized request.
+1. Record the source post ID, text and taxonomy terms.
+2. Duplicate the post.
+3. Reopen the original.
 
-Expected Result:
-•⁠  ⁠Unauthorized requests are rejected.
-•⁠  ⁠Invalid nonces are rejected.
-•⁠  ⁠Authorized requests succeed.
+**Expected:** The original ID, content and taxonomy assignments are unchanged.
 
-Actual Result: Not run
+**Observed:** Not run
 
-## Test Summary
+## Results summary
 
-| Test | Status |
-|------|--------|
-| Category preservation | Not run |
-| Tag preservation | Not run |
-| Empty taxonomy | Not run |
-| Custom taxonomy | Not run |
-| Permission verification | Not run |
+| Test | Result | Notes |
+| --- | --- | --- |
+| T1 Categories and tags | Not run | |
+| T2 No tags | Not run | |
+| T3 Custom taxonomy | Not run | |
+| T4 Permissions and nonce | Not run | |
+| T5 Original unchanged | Not run | |
 
-## Notes
+## Contributor checklist
 
-This document defines the test cases. Results must be updated after actual execution in a WordPress test environment.
+- [ ] Run the applicable tests on WordPress.
+- [ ] Replace `Not run` with `Pass`, `Fail` or `Blocked`, based only on actual observations.
+- [ ] Record WordPress / PHP versions and who performed testing.
+- [ ] Link any bugs to issues or fix commits.
+- [ ] Review the changes together before merging.
 
-Any discovered bugs should be documented and addressed before merging the pull request.
+**Collaboration:** @benmustafademirci prepared this checklist. @ygulen651 is invited to run tests, record observations, review the results, and propose corrections. Commit attribution should reflect actual work. A `Co-authored-by` footer should only be added to a change both contributors genuinely co-authored and have agreed to credit.
