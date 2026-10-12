@@ -104,6 +104,17 @@ This guide describes how to verify the post-duplication changes introduced in #4
 
 **Observed:** Not run
 
+### T9 — Comment and ping status
+
+1. Create a published test post and close comments and pingbacks/trackbacks for it.
+2. Save and duplicate the post.
+3. Inspect the duplicate's Discussion settings.
+4. Repeat with a post that explicitly allows comments and pings.
+
+**Expected:** The duplicate preserves the source's per-post comment and ping status settings. It should not silently revert either field to site defaults.
+
+**Observed:** Not run
+
 ## Results summary
 
 | Test | Result | Notes |
@@ -116,6 +127,7 @@ This guide describes how to verify the post-duplication changes introduced in #4
 | T6 Featured image | Not run | |
 | T7 Disable all post types | Not run | |
 | T8 Nested page hierarchy | Not run | |
+| T9 Comment/ping settings | Not run | |
 
 ## Contributor checklist
 
