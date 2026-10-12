@@ -17,7 +17,11 @@ if (!defined('ABSPATH')) {
 function wdc_enabled_post_types() {
     $types = get_option('wdc_post_types', ['post', 'page']);
     // The hidden checkbox sentinel means "no post types selected".
-    return is_array($types) ? array_values(array_filter($types, 'strlen')) : [];
+    return is_array($types)
+        ? array_values(array_unique(array_filter($types, function ($type) {
+            return is_string($type) && $type !== '';
+        })))
+        : [];
 }
 
 // Only allow statuses offered by the plugin settings screen.
@@ -41,6 +45,24 @@ function wdc_permitted_duplicate_status($post_type) {
     }
 
     return $status;
+}
+
+// Validate options from the settings form before they reach the database.
+function wdc_sanitize_post_types($types) {
+    if (!is_array($types)) {
+        return [];
+    }
+
+    $allowed = get_post_types(['public' => true], 'names');
+    $selected = [];
+
+    foreach ($types as $type) {
+        if (is_string($type) && $type !== '' && in_array($type, $allowed, true)) {
+            $selected[] = $type;
+        }
+    }
+
+    return array_values(array_unique($selected));
 }
 
 // Admin Menu
@@ -67,7 +89,9 @@ function wdc_settings_page() {
 
 // Register Settings
 function wdc_register_settings() {
-    register_setting('wdc_settings_group', 'wdc_post_types');
+    register_setting('wdc_settings_group', 'wdc_post_types', [
+        'sanitize_callback' => 'wdc_sanitize_post_types',
+    ]);
     register_setting('wdc_settings_group', 'wdc_post_status');
 
     add_settings_section('wdc_main_section', 'General Settings', null, 'wp-duplicate-content');
