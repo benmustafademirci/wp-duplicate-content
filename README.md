@@ -27,6 +27,10 @@ Ayarlar Paneli:<br>
 Hangi içerik türlerini kopyalayacağınızı seçin. Varsayılan olarak yazılar ve sayfalar etkin olur; ayarları kaydettikten sonra yalnızca seçtiğiniz türlerde **Duplicate** bağlantısı görünür. Seçilmeyen türler için doğrudan kopyalama istekleri de reddedilir.<br>
 Kopyalanan içeriklerin varsayılan durumunu belirleyin (Taslak, Özel, Yayınlanmış vb.).<br>
 
+## 🤝 Katkıda Bulunma
+
+Hata düzeltmesi, yeni özellik veya dokümantasyon katkısı göndermek için [katkı rehberini](CONTRIBUTING.md) okuyun. Test senaryoları için [TESTING.md](TESTING.md) dosyasını kullanabilirsiniz.
+
 🎯 Geliştirici Bilgileri<br>
 Yapımcı: Mustafa Demirci<br>
 Web Sitesi: Demirci Medya<br>
