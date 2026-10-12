@@ -93,6 +93,17 @@ This guide describes how to verify the post-duplication changes introduced in #4
 
 **Observed:** Not run
 
+### T8 — Nested page hierarchy
+
+1. Create a parent page, then create a child page under it.
+2. Give the child a nonzero Order value in Page Attributes.
+3. Duplicate the child page.
+4. Inspect the parent and order fields on the duplicate.
+
+**Expected:** The duplicated page retains the original page's parent and menu order; it has its own ID and slug. The source page and parent remain unchanged.
+
+**Observed:** Not run
+
 ## Results summary
 
 | Test | Result | Notes |
@@ -104,6 +115,7 @@ This guide describes how to verify the post-duplication changes introduced in #4
 | T5 Original unchanged | Not run | |
 | T6 Featured image | Not run | |
 | T7 Disable all post types | Not run | |
+| T8 Nested page hierarchy | Not run | |
 
 ## Contributor checklist
 
