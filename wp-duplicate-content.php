@@ -95,6 +95,7 @@ function wdc_duplicate_post() {
     $new_post = [
         'post_title'   => 'Copy - ' . $post->post_title,
         'post_content' => $post->post_content,
+        'post_excerpt' => $post->post_excerpt,
         'post_status'  => get_option('wdc_post_status', 'draft'),
         'post_type'    => $post->post_type,
         'post_author'  => get_current_user_id()
