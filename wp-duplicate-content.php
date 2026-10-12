@@ -147,6 +147,8 @@ function wdc_duplicate_post() {
         'post_title'   => 'Copy - ' . $post->post_title,
         'post_content' => $post->post_content,
         'post_excerpt' => $post->post_excerpt,
+        'post_parent'  => (int) $post->post_parent,
+        'menu_order'   => (int) $post->menu_order,
         'post_status'  => wdc_permitted_duplicate_status($post->post_type),
         'post_type'    => $post->post_type,
         'post_author'  => get_current_user_id()
