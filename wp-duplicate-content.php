@@ -20,6 +20,13 @@ function wdc_enabled_post_types() {
     return is_array($types) ? array_values(array_filter($types, 'strlen')) : [];
 }
 
+// Only allow statuses offered by the plugin settings screen.
+function wdc_duplicate_post_status() {
+    $status = get_option('wdc_post_status', 'draft');
+    $allowed = ['draft', 'publish', 'private', 'pending'];
+    return is_string($status) && in_array($status, $allowed, true) ? $status : 'draft';
+}
+
 // Admin Menu
 function wdc_admin_menu() {
     add_options_page('WP Duplicate Content', 'Duplicate Content', 'manage_options', 'wp-duplicate-content', 'wdc_settings_page');
@@ -68,7 +75,7 @@ function wdc_post_types_callback() {
 
 function wdc_post_status_callback() {
     $statuses = ['draft' => 'Draft', 'publish' => 'Published', 'private' => 'Private', 'pending' => 'Pending'];
-    $selected = get_option('wdc_post_status', 'draft');
+    $selected = wdc_duplicate_post_status();
     echo '<select name="wdc_post_status">';
     foreach ($statuses as $key => $label) {
         echo '<option value="' . esc_attr($key) . '" ' . selected($selected, $key, false) . '>' . esc_html($label) . '</option>';
@@ -100,7 +107,7 @@ function wdc_duplicate_post() {
         'post_title'   => 'Copy - ' . $post->post_title,
         'post_content' => $post->post_content,
         'post_excerpt' => $post->post_excerpt,
-        'post_status'  => get_option('wdc_post_status', 'draft'),
+        'post_status'  => wdc_duplicate_post_status(),
         'post_type'    => $post->post_type,
         'post_author'  => get_current_user_id()
     ];

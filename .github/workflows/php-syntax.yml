@@ -36,3 +36,6 @@ jobs:
 
       - name: Test post type settings behavior
         run: php tests/test-post-types.php
+
+      - name: Test status settings behavior
+        run: php tests/test-post-status.php
