@@ -42,3 +42,6 @@ jobs:
 
       - name: Test publishing capabilities
         run: php tests/test-publishing-permissions.php
+
+      - name: Test duplicate action visibility and nonce
+        run: php tests/test-duplicate-actions.php
