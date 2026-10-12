@@ -24,7 +24,7 @@ WP Duplicate Content, WordPress içeriklerinizi (gönderiler, sayfalar ve özel 
 Gönderiler/Sayfalar Listesi:<br>
 Her yazı veya sayfanın altında "Duplicate" (Çoğalt) butonu bulunur. Tıkladığınızda içeriğiniz seçtiğiniz duruma göre kopyalanır.<br>
 Ayarlar Paneli:<br>
-Hangi içerik türlerini kopyalayacağınızı seçin.<br>
+Hangi içerik türlerini kopyalayacağınızı seçin. Varsayılan olarak yazılar ve sayfalar etkin olur; ayarları kaydettikten sonra yalnızca seçtiğiniz türlerde **Duplicate** bağlantısı görünür. Seçilmeyen türler için doğrudan kopyalama istekleri de reddedilir.<br>
 Kopyalanan içeriklerin varsayılan durumunu belirleyin (Taslak, Özel, Yayınlanmış vb.).<br>
 
 🎯 Geliştirici Bilgileri<br>
