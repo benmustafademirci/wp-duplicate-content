@@ -70,6 +70,17 @@ This guide describes how to verify the post-duplication changes introduced in #4
 
 **Observed:** Not run
 
+### T6 — Featured image preserved
+
+1. Set a featured image on a post using a valid attachment in the Media Library.
+2. Save the post, then duplicate it.
+3. Open the duplicate and compare its featured image to the source.
+4. Remove the featured image from a separate source post and duplicate that post too.
+
+**Expected:** The duplicate with a featured image references the same existing Media Library attachment; no new attachment is created. A post without a featured image remains without one.
+
+**Observed:** Not run
+
 ## Results summary
 
 | Test | Result | Notes |
@@ -79,6 +90,7 @@ This guide describes how to verify the post-duplication changes introduced in #4
 | T3 Custom taxonomy | Not run | |
 | T4 Permissions and nonce | Not run | |
 | T5 Original unchanged | Not run | |
+| T6 Featured image | Not run | |
 
 ## Contributor checklist
 
