@@ -33,3 +33,6 @@ jobs:
         run: |
           find . -type f -name '*.php' -not -path './vendor/*' -print0 |
             xargs -0 -r -n 1 php -l
+
+      - name: Test post type settings behavior
+        run: php tests/test-post-types.php
