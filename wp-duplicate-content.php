@@ -132,6 +132,12 @@ function wdc_duplicate_post() {
         }
     }
 
+    // Copy the featured image reference without duplicating media attachments.
+    $thumbnail_id = get_post_thumbnail_id($post_id);
+    if ($thumbnail_id) {
+        set_post_thumbnail($new_post_id, $thumbnail_id);
+    }
+
     wp_safe_redirect(admin_url('edit.php?post_type=' . urlencode($post->post_type)));
     exit;
 }
