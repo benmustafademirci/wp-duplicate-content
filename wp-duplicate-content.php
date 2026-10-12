@@ -67,39 +67,46 @@ function wdc_post_status_callback() {
 
 // Duplicate Function
 function wdc_duplicate_post() {
-    if (!isset($_GET['post']) || !current_user_can('edit_posts')) {
+    $post_id = isset($_GET['post']) ? absint($_GET['post']) : 0;
+
+    if (!$post_id || !current_user_can('edit_post', $post_id)) {
         wp_die(__('You do not have permission to duplicate this post.'));
     }
-    
-    $post_id = absint($_GET['post']);
+
+    // Prevent another site from triggering a duplication through an admin link.
+    check_admin_referer('wdc_duplicate_' . $post_id);
+
     $post = get_post($post_id);
     if (!$post) {
         wp_die(__('Post not found.'));
     }
-    
+
     $new_post = [
-        'post_title' => 'Copy - ' . $post->post_title,
+        'post_title'   => 'Copy - ' . $post->post_title,
         'post_content' => $post->post_content,
-        'post_status' => get_option('wdc_post_status', 'draft'),
-        'post_type' => $post->post_type,
-        'post_author' => get_current_user_id()
+        'post_status'  => get_option('wdc_post_status', 'draft'),
+        'post_type'    => $post->post_type,
+        'post_author'  => get_current_user_id()
     ];
-    
-    $new_post_id = wp_insert_post($new_post);
-    
-    if ($new_post_id) {
-        wp_redirect(admin_url('edit.php?post_type=' . $post->post_type));
-        exit;
-    } else {
+
+    $new_post_id = wp_insert_post($new_post, true);
+    if (is_wp_error($new_post_id) || !$new_post_id) {
         wp_die(__('Duplication failed.'));
     }
+
+    wp_safe_redirect(admin_url('edit.php?post_type=' . urlencode($post->post_type)));
+    exit;
 }
 add_action('admin_action_wdc_duplicate', 'wdc_duplicate_post');
 
 // Add Duplicate Link
 function wdc_duplicate_link($actions, $post) {
-    if (current_user_can('edit_posts')) {
-        $actions['duplicate'] = '<a href="' . admin_url('admin.php?action=wdc_duplicate&post=' . $post->ID) . '" title="Duplicate this item">Duplicate</a>';
+    if (current_user_can('edit_post', $post->ID)) {
+        $url = wp_nonce_url(
+            admin_url('admin.php?action=wdc_duplicate&post=' . absint($post->ID)),
+            'wdc_duplicate_' . absint($post->ID)
+        );
+        $actions['duplicate'] = '<a href="' . esc_url($url) . '" title="' . esc_attr__('Duplicate this item') . '">' . esc_html__('Duplicate') . '</a>';
     }
     return $actions;
 }
