@@ -94,6 +94,32 @@ function wdc_duplicate_post() {
         wp_die(__('Duplication failed.'));
     }
 
+    // Keep existing categories, tags, and custom taxonomy terms on the copy.
+    foreach (get_object_taxonomies($post->post_type) as $taxonomy) {
+        $term_ids = wp_get_object_terms($post_id, $taxonomy, ['fields' => 'ids']);
+
+        if (is_wp_error($term_ids)) {
+            wp_delete_post($new_post_id, true);
+            wp_die(__('Could not read the original post taxonomy terms.'));
+        }
+
+        if (empty($term_ids)) {
+            continue;
+        }
+
+        $copied_terms = wp_set_object_terms(
+            $new_post_id,
+            array_map('intval', $term_ids),
+            $taxonomy,
+            false
+        );
+
+        if (is_wp_error($copied_terms)) {
+            wp_delete_post($new_post_id, true);
+            wp_die(__('Could not copy the post taxonomy terms.'));
+        }
+    }
+
     wp_safe_redirect(admin_url('edit.php?post_type=' . urlencode($post->post_type)));
     exit;
 }
