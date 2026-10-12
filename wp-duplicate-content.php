@@ -12,6 +12,13 @@ if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
+// Respect the post types selected in Settings → Duplicate Content.
+// Fresh installations allow posts and pages until an admin saves a selection.
+function wdc_enabled_post_types() {
+    $types = get_option('wdc_post_types', ['post', 'page']);
+    return is_array($types) ? $types : [];
+}
+
 // Admin Menu
 function wdc_admin_menu() {
     add_options_page('WP Duplicate Content', 'Duplicate Content', 'manage_options', 'wp-duplicate-content', 'wdc_settings_page');
@@ -49,9 +56,9 @@ add_action('admin_init', 'wdc_register_settings');
 // Callbacks
 function wdc_post_types_callback() {
     $post_types = get_post_types(['public' => true], 'objects');
-    $selected = get_option('wdc_post_types', []);
+    $selected = wdc_enabled_post_types();
     foreach ($post_types as $type) {
-        echo '<input type="checkbox" name="wdc_post_types[]" value="' . esc_attr($type->name) . '" ' . (in_array($type->name, $selected) ? 'checked' : '') . '> ' . esc_html($type->label) . '<br>';
+        echo '<input type="checkbox" name="wdc_post_types[]" value="' . esc_attr($type->name) . '" ' . (in_array($type->name, $selected, true) ? 'checked' : '') . '> ' . esc_html($type->label) . '<br>';
     }
 }
 
@@ -79,6 +86,10 @@ function wdc_duplicate_post() {
     $post = get_post($post_id);
     if (!$post) {
         wp_die(__('Post not found.'));
+    }
+
+    if (!in_array($post->post_type, wdc_enabled_post_types(), true)) {
+        wp_die(__('Duplication is disabled for this post type.'));
     }
 
     $new_post = [
@@ -127,7 +138,7 @@ add_action('admin_action_wdc_duplicate', 'wdc_duplicate_post');
 
 // Add Duplicate Link
 function wdc_duplicate_link($actions, $post) {
-    if (current_user_can('edit_post', $post->ID)) {
+    if (current_user_can('edit_post', $post->ID) && in_array($post->post_type, wdc_enabled_post_types(), true)) {
         $url = wp_nonce_url(
             admin_url('admin.php?action=wdc_duplicate&post=' . absint($post->ID)),
             'wdc_duplicate_' . absint($post->ID)
